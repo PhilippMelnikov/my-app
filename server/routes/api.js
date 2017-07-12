@@ -20,13 +20,22 @@ router.get('/categories', (req, res) => {
 });
 
 router.post('/categories', (req, res) => {
-  var category = new Category(req.body);
-  category.save((err, createdObject) => {
-    if (err) {
-      res.send(err);
+  Category.find({"title": req.body.title}, (err, categories) => {
+    if (err) throw err;
+
+    console.log(categories);
+    if (categories[0]) {
+      res.status(500).send('Категория уже существует!');
+    } else {
+      var category = new Category(req.body);
+      category.save((err, createdObject) => {
+        if (err) {
+          res.send(err);
+        }
+        res.send(createdObject);
+      });
     }
-    res.send(createdObject);
-  });
+  })
 
 });
 
@@ -53,7 +62,9 @@ router.get('/items', (req, res) => {
 
 router.get('/items/:category', (req, res) => {
 
-  Item.find({'category': req.params.category}, (err, items) => {
+  Item.find({
+    'category': req.params.category
+  }, (err, items) => {
     if (err) throw err;
 
     return res.status(200).json(items);
