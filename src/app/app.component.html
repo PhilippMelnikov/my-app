@@ -1,5 +1,15 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="logo">my-app</div>
+
+  <div class="dropdown">
+    <a class="option-vertical dropdown" href="#"  data-toggle="dropdown">
+      <span class="glyphicon glyphicon-option-vertical"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a href="">Добавить товар</a></li>
+      <li><a href="">Добавить категорию</a></li>
+    </ul>
+  </div>
 </nav>
 
 <!-- Sidebar -->
@@ -9,7 +19,7 @@
       Категории
     </li>
     <li *ngFor="let category of categories">
-      <a class="delete-category" href="">x</a>
+      <a class="delete-category" href="" (click)="deleteCategory(category._id)">x</a>
       <a href="#">{{category.title}}</a>
     </li>
   </ul>

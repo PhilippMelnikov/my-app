@@ -19,4 +19,14 @@ export class AppComponent implements OnInit {
       console.log(categories);
     });
   }
+
+  deleteCategory(id: number){
+    this.dataService.deleteCategory(id).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  addCategory(title: string){
+
+  }
 }
