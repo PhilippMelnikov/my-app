@@ -1,0 +1,21 @@
+<modal #myModal>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">Добавить категорию</h4>
+    </modal-header>
+    <modal-body>
+      <form #addItemForm="ngForm" [formGroup]="newItemForm">
+        <select name="category" class="form-control" title="Категория" formControlName="category" required>
+          <option *ngFor="let category of categories" [value]="category._id">{{category.title}}</option>
+        </select>
+        <br>
+        <input name="title" type="text" class="form-control" placeholder="Название" formControlName="title" required>
+        <br>
+        <input name="purchasePrice" pattern="[0-9]+" type="number" class="form-control" placeholder="Закупочная цена" formControlName="purchase_price" required>
+        <br>
+        <input name="sellingPrice" pattern="[0-9]+" type="number" class="form-control" placeholder="Розничная цена" formControlName="selling_price" required>
+      </form>
+    </modal-body>
+    <modal-footer>
+        <button type="button" class="btn btn-default" (click)="myModal.close(newItemForm.value)" [disabled]="!addItemForm.valid">Сохранить</button>
+    </modal-footer>
+</modal>

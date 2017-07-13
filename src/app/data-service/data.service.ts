@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Item } from '../models/item'
 
 @Injectable()
 export class DataService {
@@ -15,6 +16,30 @@ export class DataService {
 
   deleteCategory(id: number) {
     return this.http.delete(`/api/categories/${id}`)
+      .map(res => res.json());
+  }
+
+  addCategory(newCategoryTitle: string) {
+    let body = JSON.stringify({title: newCategoryTitle});
+    let headers = new Headers({'Content-Type': 'application/json;charset=utf-8'});
+    let options = new RequestOptions({ headers: headers });
+    console.log(newCategoryTitle);
+    return this.http.post(`/api/categories`, body, options)
+      .map(res => res.json());
+  }
+
+  getItemsbyCategory(category: string) {
+    return this.http.get(`/api/items/${category}`)
+      .map(res => {
+        return res.json();
+      });
+  }
+
+  addItem(item: Item){
+    let body = JSON.stringify(item);
+    let headers = new Headers({'Content-Type': 'application/json;charset=utf-8'});
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(`/api/items`, body, options)
       .map(res => res.json());
   }
 

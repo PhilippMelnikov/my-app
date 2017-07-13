@@ -1,17 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
 
 import { AppComponent } from './app.component';
 import { DataService } from './data-service/data.service';
+import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
+import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AddCategoryModalComponent,
+    AddItemModalComponent
   ],
   imports: [
     BrowserModule,
-    HttpModule
+    HttpModule,
+    FormsModule,
+    ReactiveFormsModule,
+    Ng2Bs3ModalModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
