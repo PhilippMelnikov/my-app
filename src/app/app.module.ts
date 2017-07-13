@@ -10,6 +10,7 @@ import { AddCategoryModalComponent } from './add-category-modal/add-category-mod
 import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
 import { EditItemModalComponent } from './edit-item-modal/edit-item-modal.component';
 import { DeleteCategoryModalComponent } from './delete-category-modal/delete-category-modal.component';
+import { DeleteItemModalComponent } from './delete-item-modal/delete-item-modal.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { DeleteCategoryModalComponent } from './delete-category-modal/delete-cat
     AddCategoryModalComponent,
     AddItemModalComponent,
     EditItemModalComponent,
-    DeleteCategoryModalComponent
+    DeleteCategoryModalComponent,
+    DeleteItemModalComponent
   ],
   imports: [
     BrowserModule,

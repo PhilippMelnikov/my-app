@@ -1,0 +1,9 @@
+<modal #myModal>
+  <modal-header [show-close]="true">
+    <h4 class="modal-title" *ngIf="itemId">Точно удалить товар id{{itemId}}?</h4>
+  </modal-header>
+  <modal-footer>
+    <button type="button" class="btn btn-primary" (click)="myModal.close()">Да</button>
+    <button type="button" class="btn btn-default" data-dismiss="myModal" (click)="myModal.dismiss()">Нет</button>
+  </modal-footer>
+</modal>

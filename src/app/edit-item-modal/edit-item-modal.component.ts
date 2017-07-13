@@ -13,7 +13,7 @@ export class EditItemModalComponent implements OnInit {
     myModal: ModalComponent;
 
   @Input() categories: any[];
-  @Input() currentItem: Item;
+  @Input() itemToEdit: any;
 
   newItemForm: FormGroup = new FormGroup({
     category: new FormControl(),
@@ -26,18 +26,11 @@ export class EditItemModalComponent implements OnInit {
 
   ngOnInit() {
     this.myModal.onOpen.subscribe(() => {
-
-      // this.newItemForm = new FormGroup({
-      //   category: new FormControl(this.currentItem ? this.currentItem.category : null),
-      //   title: new FormControl(this.currentItem ? this.currentItem.title : null),
-      //   selling_price: new FormControl(this.currentItem ? this.currentItem.selling_price : null),
-      //   purchase_price: new FormControl(this.currentItem ? this.currentItem.purchase_price : null),
-      // });
       this.newItemForm.setValue({
-        category: this.currentItem ? this.currentItem.category : null,
-        title: this.currentItem ? this.currentItem.title : null,
-        selling_price: this.currentItem ? this.currentItem.selling_price : null,
-        purchase_price: this.currentItem ? this.currentItem.purchase_price : null,
+        category: this.itemToEdit ? this.itemToEdit.category : null,
+        title: this.itemToEdit ? this.itemToEdit.title : null,
+        selling_price: this.itemToEdit ? this.itemToEdit.selling_price : null,
+        purchase_price: this.itemToEdit ? this.itemToEdit.purchase_price : null,
        })
     })
   }

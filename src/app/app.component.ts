@@ -3,6 +3,7 @@ import { DataService } from './data-service/data.service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
 import { DeleteCategoryModalComponent } from './delete-category-modal/delete-category-modal.component';
+import { DeleteItemModalComponent } from './delete-item-modal/delete-item-modal.component';
 import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
 import { EditItemModalComponent } from './edit-item-modal/edit-item-modal.component';
 import { Item } from './models/item';
@@ -18,6 +19,9 @@ export class AppComponent implements OnInit {
 
   @ViewChild('deleteCategoryModal')
   deleteCategoryModalComponent: DeleteCategoryModalComponent;
+
+  @ViewChild('deleteItemModal')
+  deleteItemModalComponent: DeleteItemModalComponent;
 
   @ViewChild('addItemModal')
   addItemModalComponent: AddItemModalComponent;
@@ -36,7 +40,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // Retrieve categories from the API
-    this.dataService.getAllCategories().subscribe(categories => {
+    this.dataService.getAllCategories().subscribe( categories => {
       this.categories = categories;
       console.log(categories[0].title);
       this.currentCategory = categories[0];
@@ -45,43 +49,47 @@ export class AppComponent implements OnInit {
 
     // handling modals
 
-    this.addCategoryModalComponent.myModal.onClose.subscribe(category => {
+    this.addCategoryModalComponent.myModal.onClose.subscribe( category => {
       this.addCategory(category);
     });
 
-    this.addItemModalComponent.myModal.onClose.subscribe(item => {
+    this.addItemModalComponent.myModal.onClose.subscribe( item => {
       this.addItem(item);
     });
 
-    this.editItemModalComponent.myModal.onClose.subscribe(item => {
+    this.editItemModalComponent.myModal.onClose.subscribe( item => {
       this.editItem(this.currentItem._id, item);
+    });
+
+    this.deleteItemModalComponent.myModal.onClose.subscribe( () => {
+      this.deleteItem(this.currentItem._id);
     });
   }
 
 
   addCategory(newCategoryTitle: string) {
-    this.dataService.addCategory(newCategoryTitle).subscribe(category => {
+    this.dataService.addCategory(newCategoryTitle).subscribe( category => {
       this.categories.push(category);
     });
   }
 
   getItemsbyCategory(category: any) {
     this.currentCategory = category;
-    this.dataService.getItemsbyCategory(category._id).subscribe(items => {
+    this.dataService.getItemsbyCategory(category._id).subscribe( items => {
       this.items = items;
     })
   }
 
   addItem(item: Item) {
-    this.dataService.addItem(item).subscribe(item => {
-      if (item.category == this.currentCategory) {
+    this.dataService.addItem(item).subscribe( item => {
+      if (item.category == this.currentCategory._id) {
         this.items.push(item);
       }
     });
   }
 
   editItem(id: string, item: Item) {
-    this.dataService.editItem(id, item).subscribe(newItem => {
+    this.dataService.editItem(id, item).subscribe( newItem => {
       this.items.forEach((item, i, arr) => {
         if (item._id == id) {
           if (newItem.category != this.currentCategory._id) {
@@ -95,7 +103,18 @@ export class AppComponent implements OnInit {
     });
   }
 
-  setCurrentItem(item: Item) {
+  deleteItem(id: string) {
+    this.dataService.deleteItem(id).subscribe( res => {
+      this.items.forEach((item, i, arr) => {
+        if (item._id == id) {
+          arr.splice(i, 1);
+        }
+      })
+    })
+  }
+
+
+  setCurrentItem(item: any) {
     this.currentItem = item;
   }
 
@@ -121,7 +140,13 @@ export class AppComponent implements OnInit {
     this.addItemModalComponent.myModal.open();
   }
 
-  openEditItemModal(item: Item) {
+  openDeleteItemModal(item: any) {
+    this.setCurrentItem(item);
+    console.log(this.currentItem);
+    this.deleteItemModalComponent.myModal.open();
+  }
+
+  openEditItemModal(item: any) {
     this.setCurrentItem(item);
     this.editItemModalComponent.myModal.open();
   }

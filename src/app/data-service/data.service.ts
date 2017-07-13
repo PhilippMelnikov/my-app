@@ -53,4 +53,9 @@ export class DataService {
       .map(res => res.json());
   }
 
+  deleteItem(id: string){
+    return this.http.delete(`/api/items/${id}`)
+      .map(res => res.json());
+  }
+
 }

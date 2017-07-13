@@ -50,7 +50,7 @@
         <td>{{item.purchase_price}}</td>
         <td>{{item.selling_price}}</td>
         <td>
-          <button class="btn btn-danger">Удалить</button>
+          <button class="btn btn-danger" (click)="openDeleteItemModal(item)">Удалить</button>
           <button class="btn btn-info" (click)="openEditItemModal(item)">Изменить</button>
         </td>
       </tr>
@@ -58,9 +58,10 @@
   </table>
 
   <!-- modals -->
-  <!-- <app-add-category-modal [callback]="appAddCategory"></app-add-category-modal> -->
   <app-add-category-modal #addCategoryModal></app-add-category-modal>
   <app-add-item-modal #addItemModal [categories]="categories"></app-add-item-modal>
-  <app-edit-item-modal #editItemModal [categories]="categories" [currentItem]="currentItem"></app-edit-item-modal>
+  <app-edit-item-modal #editItemModal [categories]="categories" [itemToEdit]="currentItem"></app-edit-item-modal>
   <app-delete-category-modal #deleteCategoryModal></app-delete-category-modal>
+
+  <app-delete-item-modal #deleteItemModal [itemToDelete]="currentItem"></app-delete-item-modal>
 </div>
