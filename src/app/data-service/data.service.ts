@@ -14,7 +14,9 @@ export class DataService {
       .map(res => res.json());
   }
 
-  deleteCategory(id: number) {
+
+
+  deleteCategory(id: string) {
     return this.http.delete(`/api/categories/${id}`)
       .map(res => res.json());
   }

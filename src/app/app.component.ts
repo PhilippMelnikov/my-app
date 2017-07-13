@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from './data-service/data.service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
+import { DeleteCategoryModalComponent } from './delete-category-modal/delete-category-modal.component';
 import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
 import { EditItemModalComponent } from './edit-item-modal/edit-item-modal.component';
 import { Item } from './models/item';
@@ -14,6 +15,9 @@ import { Item } from './models/item';
 export class AppComponent implements OnInit {
   @ViewChild('addCategoryModal')
   addCategoryModalComponent: AddCategoryModalComponent;
+
+  @ViewChild('deleteCategoryModal')
+  deleteCategoryModalComponent: DeleteCategoryModalComponent;
 
   @ViewChild('addItemModal')
   addItemModalComponent: AddItemModalComponent;
@@ -54,11 +58,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  deleteCategory(id: number) {
-    this.dataService.deleteCategory(id).subscribe(res => {
-
-    })
-  }
 
   addCategory(newCategoryTitle: string) {
     this.dataService.addCategory(newCategoryTitle).subscribe(category => {
@@ -88,8 +87,8 @@ export class AppComponent implements OnInit {
           if (newItem.category != this.currentCategory._id) {
             arr.splice(i, 1);
           } else {
-              arr.splice(i, 1, newItem);
-              console.log(newItem);
+            arr.splice(i, 1, newItem);
+            console.log(newItem);
           }
         }
       })
@@ -101,6 +100,20 @@ export class AppComponent implements OnInit {
   }
 
   // Modal windows
+
+  openDeleteCategoryModal(id: string) {
+    this.deleteCategoryModalComponent.myModal.open();
+    this.deleteCategoryModalComponent.myModal.onClose.subscribe(res => {
+      this.dataService.deleteCategory(id).subscribe(res => {
+        this.categories.forEach((category, i, arr) => {
+          if (category._id == id) {
+            arr.splice(i, 1);
+          }
+        })
+      })
+    })
+  }
+
   openAddCategoryModal() {
     this.addCategoryModalComponent.myModal.open();
   }

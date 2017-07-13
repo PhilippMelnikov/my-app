@@ -19,7 +19,7 @@
       Категории
     </li>
     <li *ngFor="let category of categories">
-      <a class="delete-category" href="" (click)="deleteCategory(category._id)">x</a>
+      <a class="delete-category" href="#" (click)="openDeleteCategoryModal(category._id)">x</a>
       <a href="#" (click)="getItemsbyCategory(category)">{{category.title}}</a>
     </li>
   </ul>
@@ -62,4 +62,5 @@
   <app-add-category-modal #addCategoryModal></app-add-category-modal>
   <app-add-item-modal #addItemModal [categories]="categories"></app-add-item-modal>
   <app-edit-item-modal #editItemModal [categories]="categories" [currentItem]="currentItem"></app-edit-item-modal>
+  <app-delete-category-modal #deleteCategoryModal></app-delete-category-modal>
 </div>

@@ -9,13 +9,15 @@ import { DataService } from './data-service/data.service';
 import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
 import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
 import { EditItemModalComponent } from './edit-item-modal/edit-item-modal.component';
+import { DeleteCategoryModalComponent } from './delete-category-modal/delete-category-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AddCategoryModalComponent,
     AddItemModalComponent,
-    EditItemModalComponent
+    EditItemModalComponent,
+    DeleteCategoryModalComponent
   ],
   imports: [
     BrowserModule,

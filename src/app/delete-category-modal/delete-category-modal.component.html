@@ -1,0 +1,12 @@
+<modal #myModal>
+  <modal-header [show-close]="true">
+    <h4 class="modal-title">Хотите удалить категорию?</h4>
+  </modal-header>
+  <modal-body>
+    Все товары в этой категории будут помечены "Без категории"
+  </modal-body>
+  <modal-footer>
+    <button type="button" class="btn btn-primary" (click)="myModal.close()">Да</button>
+    <button type="button" class="btn btn-default" data-dismiss="myModal" (click)="myModal.dismiss()">Нет</button>
+  </modal-footer>
+</modal>
