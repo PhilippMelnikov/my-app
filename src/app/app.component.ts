@@ -3,6 +3,7 @@ import { DataService } from './data-service/data.service';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { AddCategoryModalComponent } from './add-category-modal/add-category-modal.component';
 import { AddItemModalComponent } from './add-item-modal/add-item-modal.component';
+import { EditItemModalComponent } from './edit-item-modal/edit-item-modal.component';
 import { Item } from './models/item';
 
 @Component({
@@ -12,26 +13,30 @@ import { Item } from './models/item';
 })
 export class AppComponent implements OnInit {
   @ViewChild('addCategoryModal')
-   addCategoryModalComponent: AddCategoryModalComponent;
+  addCategoryModalComponent: AddCategoryModalComponent;
 
-   @ViewChild('addItemModal')
-    addItemModalComponent: AddItemModalComponent;
+  @ViewChild('addItemModal')
+  addItemModalComponent: AddItemModalComponent;
+
+  @ViewChild('editItemModal')
+  editItemModalComponent: EditItemModalComponent;
 
   categories: any = [];
   items: any = [];
-  currentCategory: string;
+  currentCategory: any = {};
+  currentItem: any;
   newCategoryTitle: string = "";
-  constructor(private dataService: DataService){
+  constructor(private dataService: DataService) {
 
   }
 
-  ngOnInit(){
+  ngOnInit() {
     // Retrieve categories from the API
     this.dataService.getAllCategories().subscribe(categories => {
       this.categories = categories;
       console.log(categories[0].title);
-      this.currentCategory = categories[0]._id;
-      this.getItemsbyCategory(categories[0]._id);
+      this.currentCategory = categories[0];
+      this.getItemsbyCategory(categories[0]);
     });
 
     // handling modals
@@ -43,41 +48,69 @@ export class AppComponent implements OnInit {
     this.addItemModalComponent.myModal.onClose.subscribe(item => {
       this.addItem(item);
     });
+
+    this.editItemModalComponent.myModal.onClose.subscribe(item => {
+      this.editItem(this.currentItem._id, item);
+    });
   }
 
-  deleteCategory(id: number){
+  deleteCategory(id: number) {
     this.dataService.deleteCategory(id).subscribe(res => {
 
     })
   }
 
-  addCategory(newCategoryTitle: string){
+  addCategory(newCategoryTitle: string) {
     this.dataService.addCategory(newCategoryTitle).subscribe(category => {
       this.categories.push(category);
     });
   }
 
-  getItemsbyCategory(categoryID: string){
-      this.currentCategory = categoryID;
-      this.dataService.getItemsbyCategory(categoryID).subscribe(items => {
-        this.items = items;
-      })
+  getItemsbyCategory(category: any) {
+    this.currentCategory = category;
+    this.dataService.getItemsbyCategory(category._id).subscribe(items => {
+      this.items = items;
+    })
   }
 
-  addItem(item: Item){
+  addItem(item: Item) {
     this.dataService.addItem(item).subscribe(item => {
-      if(item.category == this.currentCategory){
+      if (item.category == this.currentCategory) {
         this.items.push(item);
       }
     });
   }
 
+  editItem(id: string, item: Item) {
+    this.dataService.editItem(id, item).subscribe(newItem => {
+      this.items.forEach((item, i, arr) => {
+        if (item._id == id) {
+          if (newItem.category != this.currentCategory._id) {
+            arr.splice(i, 1);
+          } else {
+              arr.splice(i, 1, newItem);
+              console.log(newItem);
+          }
+        }
+      })
+    });
+  }
+
+  setCurrentItem(item: Item) {
+    this.currentItem = item;
+  }
+
   // Modal windows
-  openAddCategoryModal(){
+  openAddCategoryModal() {
     this.addCategoryModalComponent.myModal.open();
   }
-  openAddItemModal(){
+  openAddItemModal() {
     this.addItemModalComponent.myModal.open();
+  }
+
+  openEditItemModal(item: Item) {
+    this.setCurrentItem(item);
+    this.editItemModalComponent.myModal.open();
   }
 
 

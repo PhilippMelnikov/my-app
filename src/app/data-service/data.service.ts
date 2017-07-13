@@ -43,4 +43,12 @@ export class DataService {
       .map(res => res.json());
   }
 
+  editItem(id: string, item: Item){
+    let body = JSON.stringify(item);
+    let headers = new Headers({'Content-Type': 'application/json;charset=utf-8'});
+    let options = new RequestOptions({ headers: headers });
+    return this.http.put(`/api/items/${id}`, body, options)
+      .map(res => res.json());
+  }
+
 }
