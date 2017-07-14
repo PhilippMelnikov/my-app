@@ -1,21 +1,23 @@
 <modal #myModal>
+  <div *ngIf="itemToEdit">
     <modal-header [show-close]="true">
-        <h4 class="modal-title">Изменить товар</h4>
+      <h4 class="modal-title">Изменить товар</h4>
     </modal-header>
     <modal-body>
-      <form #addItemForm="ngForm" [formGroup]="newItemForm">
-        <select name="category" class="form-control" title="Категория" formControlName="category" required>
+      <form #addItemForm="ngForm">
+        <select name="category" class="form-control" title="Категория" [(ngModel)]="itemToEdit.category" required>
           <option *ngFor="let category of categories" [value]="category._id">{{category.title}}</option>
         </select>
         <br>
-        <input name="title" type="text" class="form-control" placeholder="Название" formControlName="title" required>
+        <input name="title" type="text" class="form-control" placeholder="Название" [(ngModel)]="itemToEdit.title" required>
         <br>
-        <input name="purchasePrice" pattern="[0-9]+" type="number" class="form-control" placeholder="Закупочная цена" formControlName="purchase_price" required>
+        <input name="purchasePrice" pattern="[0-9]+" type="number" class="form-control" placeholder="Закупочная цена" [(ngModel)]="itemToEdit.purchase_price" required>
         <br>
-        <input name="sellingPrice" pattern="[0-9]+" type="number" class="form-control" placeholder="Розничная цена" formControlName="selling_price" required>
+        <input name="sellingPrice" pattern="[0-9]+" type="number" class="form-control" placeholder="Розничная цена"  [(ngModel)]="itemToEdit.selling_price" required>
       </form>
     </modal-body>
     <modal-footer>
-        <button type="button" class="btn btn-default" (click)="myModal.close(newItemForm.value)" [disabled]="!addItemForm.valid">Сохранить</button>
+      <button type="button" class="btn btn-default" (click)="myModal.close(itemToEdit)" [disabled]="!addItemForm.valid">Сохранить</button>
     </modal-footer>
+  </div>
 </modal>
