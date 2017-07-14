@@ -42,7 +42,6 @@ export class AppComponent implements OnInit {
     // Retrieve categories from the API
     this.dataService.getAllCategories().subscribe(categories => {
       this.categories = categories;
-      console.log(categories[0].title);
       this.currentCategory = categories[0];
       this.getItemsbyCategory(categories[0]);
     });
@@ -54,8 +53,16 @@ export class AppComponent implements OnInit {
       this.addCategoryModalComponent.resetCategoryTitle();
     });
 
+    this.addCategoryModalComponent.myModal.onDismiss.subscribe(() => {
+      this.addCategoryModalComponent.resetCategoryTitle();
+    });
+
     this.addItemModalComponent.myModal.onClose.subscribe(item => {
       this.addItem(item);
+      this.addItemModalComponent.resetForm();
+    });
+
+    this.addItemModalComponent.myModal.onDismiss.subscribe(() => {
       this.addItemModalComponent.resetForm();
     });
 
@@ -82,12 +89,12 @@ export class AppComponent implements OnInit {
     })
   }
 
-  getItemsbyCategoryNoName(){
-    this.currentCategory = {title: 'Без категории'};
+  getItemsbyCategoryNoName() {
+    this.currentCategory = { title: 'Без категории' };
     this.dataService.getItemsbyCategoryNoName().subscribe(items => {
       this.items = items;
-  })
-}
+    })
+  }
 
   addItem(item: Item) {
     this.dataService.addItem(item).subscribe(item => {
@@ -105,7 +112,6 @@ export class AppComponent implements OnInit {
             arr.splice(i, 1);
           } else {
             arr.splice(i, 1, newItem);
-            console.log(newItem);
           }
         }
       })
@@ -122,7 +128,6 @@ export class AppComponent implements OnInit {
     })
   }
 
-
   setCurrentItem(item: any) {
     this.currentItem = item;
   }
@@ -132,19 +137,23 @@ export class AppComponent implements OnInit {
   openDeleteCategoryModal(id: string) {
     this.deleteCategoryModalComponent.myModal.open();
     this.deleteCategoryModalComponent.myModal.onClose.subscribe(res => {
-      this.dataService.deleteCategory(id).subscribe(updatedItems => {
+      this.dataService.deleteCategory(id).subscribe(result => {
         this.categories.forEach((category, i, arr) => {
           if (category._id == id) {
             arr.splice(i, 1);
           }
         })
-        if(this.currentCategory._id == id){
+        if (this.currentCategory._id == id) {
           this.getItemsbyCategory(this.categories[0]);
         }
-        if(!this.currentCategory._id){
-          updatedItems.forEach((item)=>{
-            this.items.push(item);
-          })
+        // if array of objects returned / items updated
+        if(result[0]){
+          // if noname category is currentCategory
+          if (!this.currentCategory._id) {
+            result.forEach((item) => {
+              this.items.push(item);
+            })
+          }
         }
       })
     })
@@ -153,6 +162,7 @@ export class AppComponent implements OnInit {
   openAddCategoryModal() {
     this.addCategoryModalComponent.myModal.open();
   }
+
   openAddItemModal() {
     this.addItemModalComponent.myModal.open();
   }
@@ -164,6 +174,7 @@ export class AppComponent implements OnInit {
 
   openEditItemModal(item: any) {
     this.setCurrentItem(item);
+    this.editItemModalComponent.assignForm(item);
     this.editItemModalComponent.myModal.open();
   }
 

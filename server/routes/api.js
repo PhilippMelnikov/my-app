@@ -20,7 +20,6 @@ router.get('/categories', (req, res) => {
 });
 
 router.post('/categories', (req, res) => {
-  console.log("post category");
   Category.find({
     "title": req.body.title
   }, (err, categories) => {
@@ -45,7 +44,6 @@ router.delete('/categories/:id', (req, res) => {
   Category.findByIdAndRemove(req.params.id, (err1) => {
     if (err1) throw err1;
 
-    console.log('category deleted');
     Item.find({
       'category': req.params.id
     }, (err2, items) => {
@@ -58,7 +56,6 @@ router.delete('/categories/:id', (req, res) => {
           item.save((err3, createdObject) => {
             if (err3) throw err3
 
-            console.log("createdObject", createdObject);
             result.push(createdObject);
             if (result.length == arr.length) {
               return res.status(200).json(result);
@@ -67,7 +64,6 @@ router.delete('/categories/:id', (req, res) => {
         })
       }
       else{
-        console.log("success");
         return res.status(200).json("success");
       }
     })

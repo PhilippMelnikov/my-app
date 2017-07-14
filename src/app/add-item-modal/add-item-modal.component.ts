@@ -13,7 +13,12 @@ export class AddItemModalComponent implements OnInit{
 
   @Input() categories: any[];
 
-  newItemForm: FormGroup;
+  newItemForm: FormGroup = new FormGroup({
+    category: new FormControl(),
+    title: new FormControl(),
+    selling_price: new FormControl(),
+    purchase_price: new FormControl(),
+  });
 
   constructor() { }
 
@@ -22,12 +27,7 @@ export class AddItemModalComponent implements OnInit{
   }
 
  resetForm(){
-   this.newItemForm = new FormGroup({
-     category: new FormControl(null),
-     title: new FormControl(),
-     selling_price: new FormControl(),
-     purchase_price: new FormControl(),
-   });
+   this.newItemForm.reset();
  }
 
 }

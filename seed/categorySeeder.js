@@ -3,7 +3,6 @@ var Category = require('../models/category');
 var mongoose = require('mongoose');
 
 mongoose.connect('localhost:27017/myAppDb',function(){
-    mongoose.connection.db.dropDatabase(function(err, result){
 
     	var categories = [
       	new Category({
@@ -38,6 +37,4 @@ mongoose.connect('localhost:27017/myAppDb',function(){
         mongoose.disconnect();
       }
 
-
-    });
 });
