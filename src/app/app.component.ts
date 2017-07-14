@@ -159,7 +159,6 @@ export class AppComponent implements OnInit {
 
   openDeleteItemModal(item: any) {
     this.setCurrentItem(item);
-    console.log(this.currentItem);
     this.deleteItemModalComponent.myModal.open();
   }
 
