@@ -20,10 +20,10 @@ router.get('/categories', (req, res) => {
 });
 
 router.post('/categories', (req, res) => {
+  console.log("post category");
   Category.find({"title": req.body.title}, (err, categories) => {
     if (err) throw err;
 
-    console.log(categories);
     if (categories[0]) {
       res.status(500).send('Категория уже существует!');
     } else {
@@ -32,7 +32,7 @@ router.post('/categories', (req, res) => {
         if (err) {
           res.send(err);
         }
-        res.send(createdObject);
+          return res.status(200).json(createdObject);
       });
     }
   })
@@ -40,11 +40,28 @@ router.post('/categories', (req, res) => {
 });
 
 router.delete('/categories/:id', (req, res) => {
-  Category.findByIdAndRemove(req.params.id, (err) => {
-    if (err) throw err;
+  Category.findByIdAndRemove(req.params.id, (err1) => {
+    if (err1) throw err1;
 
     console.log('category deleted');
-    return res.status(200);
+    Item.find({'category': req.params.id}, (err2, items) => {
+      if (err2) throw err2
+
+      result = [];
+
+      items.forEach((item,i, arr) => {
+        item.category = null;
+        item.save((err3, createdObject) => {
+          if (err3) throw err3
+
+          console.log("createdObject", createdObject);
+          result.push(createdObject);
+          if(result.length == arr.length){
+            return res.status(200).json(result);
+          }
+        })
+      })
+    })
   });
 });
 
@@ -59,12 +76,18 @@ router.get('/items', (req, res) => {
   });
 })
 
+router.get('/items/category/noname', (req, res) => {
 
-router.get('/items/:category', (req, res) => {
+  Item.find({'category': null}, (err, items) => {
+    if (err) throw err;
 
-  Item.find({
-    'category': req.params.category
-  }, (err, items) => {
+    return res.status(200).json(items);
+  });
+})
+
+
+router.get('/items/:category_id', (req, res) => {
+  Item.find({'category': req.params.category_id}, (err, items) => {
     if (err) throw err;
 
     return res.status(200).json(items);
@@ -72,13 +95,14 @@ router.get('/items/:category', (req, res) => {
 
 });
 
+
 router.post('/items', (req, res) => {
   var item = new Item(req.body);
   item.save((err, createdObject) => {
     if (err) {
       res.send(err);
     }
-    res.send(createdObject);
+    res.status(200).send(createdObject);
   });
 });
 
@@ -86,8 +110,7 @@ router.delete('/items/:id', (req, res) => {
   Item.findByIdAndRemove(req.params.id, (err) => {
     if (err) throw err;
 
-    console.log('item deleted');
-    return res.status(200);
+    res.status(200).send({res: "success"});
   });
 });
 
@@ -100,11 +123,11 @@ router.put('/items/:id', (req, res) => {
       item.purchase_price = req.body.purchase_price || item.purchase_price;
       item.selling_price = req.body.selling_price || item.selling_price;
       item.category = req.body.category || item.category;
-      item.save((err, item) => {
+      item.save((err, createdObject) => {
         if (err) {
           res.status(500).send(err)
         }
-        res.status(200).send(item);
+        res.status(200).send(createdObject);
       });
     }
   })
