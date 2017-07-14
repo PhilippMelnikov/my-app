@@ -133,7 +133,6 @@ export class AppComponent implements OnInit {
     this.deleteCategoryModalComponent.myModal.open();
     this.deleteCategoryModalComponent.myModal.onClose.subscribe(res => {
       this.dataService.deleteCategory(id).subscribe(updatedItems => {
-        console.log("updatedItems", updatedItems);
         this.categories.forEach((category, i, arr) => {
           if (category._id == id) {
             arr.splice(i, 1);
