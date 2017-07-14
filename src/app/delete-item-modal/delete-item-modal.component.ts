@@ -12,14 +12,11 @@ export class DeleteItemModalComponent implements OnInit {
 
   @Input() itemToDelete: any;
 
-  itemId: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.myModal.onOpen.subscribe(() => {
-      this.itemId = this.itemToDelete ? this.itemToDelete._id : null;
-    });
+
   }
 
 }

@@ -1,10 +1,11 @@
 <modal #myModal>
     <modal-header [show-close]="true">
-        <h4 class="modal-title">Добавить категорию</h4>
+        <h4 class="modal-title">Добавить товар</h4>
     </modal-header>
     <modal-body>
       <form #addItemForm="ngForm" [formGroup]="newItemForm">
-        <select name="category" class="form-control" title="Категория" formControlName="category" required>
+        <select name="category" class="form-control" formControlName="category" required>
+          <option value="null">Без категории</option>
           <option *ngFor="let category of categories" [value]="category._id">{{category.title}}</option>
         </select>
         <br>

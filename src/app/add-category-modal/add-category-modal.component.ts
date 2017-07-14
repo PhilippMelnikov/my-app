@@ -12,9 +12,14 @@ export class AddCategoryModalComponent implements OnInit {
 
   newCategoryTitle: string = "";
 
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  resetCategoryTitle(){
+    this.newCategoryTitle = "";
   }
 
 }

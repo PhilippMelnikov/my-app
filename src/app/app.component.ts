@@ -51,10 +51,12 @@ export class AppComponent implements OnInit {
 
     this.addCategoryModalComponent.myModal.onClose.subscribe(category => {
       this.addCategory(category);
+      this.addCategoryModalComponent.resetCategoryTitle();
     });
 
     this.addItemModalComponent.myModal.onClose.subscribe(item => {
       this.addItem(item);
+      this.addItemModalComponent.resetForm();
     });
 
     this.editItemModalComponent.myModal.onClose.subscribe(item => {

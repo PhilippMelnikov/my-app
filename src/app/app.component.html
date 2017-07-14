@@ -22,6 +22,9 @@
       <a class="delete-category" href="#" (click)="openDeleteCategoryModal(category._id)">x</a>
       <a href="#" (click)="getItemsbyCategory(category)">{{category.title}}</a>
     </li>
+    <li>
+      <a href="#" (click)="getItemsbyCategoryNoName()">Без категории</a>
+    </li>
   </ul>
 </div>
 <!-- /#sidebar-wrapper -->
