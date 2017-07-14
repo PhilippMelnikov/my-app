@@ -21,7 +21,9 @@ router.get('/categories', (req, res) => {
 
 router.post('/categories', (req, res) => {
   console.log("post category");
-  Category.find({"title": req.body.title}, (err, categories) => {
+  Category.find({
+    "title": req.body.title
+  }, (err, categories) => {
     if (err) throw err;
 
     if (categories[0]) {
@@ -32,7 +34,7 @@ router.post('/categories', (req, res) => {
         if (err) {
           res.send(err);
         }
-          return res.status(200).json(createdObject);
+        return res.status(200).json(createdObject);
       });
     }
   })
@@ -44,23 +46,30 @@ router.delete('/categories/:id', (req, res) => {
     if (err1) throw err1;
 
     console.log('category deleted');
-    Item.find({'category': req.params.id}, (err2, items) => {
+    Item.find({
+      'category': req.params.id
+    }, (err2, items) => {
       if (err2) throw err2
 
-      result = [];
+      if (items[0]) {
+        result = [];
+        items.forEach((item, i, arr) => {
+          item.category = null;
+          item.save((err3, createdObject) => {
+            if (err3) throw err3
 
-      items.forEach((item,i, arr) => {
-        item.category = null;
-        item.save((err3, createdObject) => {
-          if (err3) throw err3
-
-          console.log("createdObject", createdObject);
-          result.push(createdObject);
-          if(result.length == arr.length){
-            return res.status(200).json(result);
-          }
+            console.log("createdObject", createdObject);
+            result.push(createdObject);
+            if (result.length == arr.length) {
+              return res.status(200).json(result);
+            }
+          })
         })
-      })
+      }
+      else{
+        console.log("success");
+        return res.status(200).json("success");
+      }
     })
   });
 });
@@ -78,7 +87,9 @@ router.get('/items', (req, res) => {
 
 router.get('/items/category/noname', (req, res) => {
 
-  Item.find({'category': null}, (err, items) => {
+  Item.find({
+    'category': null
+  }, (err, items) => {
     if (err) throw err;
 
     return res.status(200).json(items);
@@ -87,7 +98,9 @@ router.get('/items/category/noname', (req, res) => {
 
 
 router.get('/items/:category_id', (req, res) => {
-  Item.find({'category': req.params.category_id}, (err, items) => {
+  Item.find({
+    'category': req.params.category_id
+  }, (err, items) => {
     if (err) throw err;
 
     return res.status(200).json(items);
@@ -110,7 +123,9 @@ router.delete('/items/:id', (req, res) => {
   Item.findByIdAndRemove(req.params.id, (err) => {
     if (err) throw err;
 
-    res.status(200).send({res: "success"});
+    res.status(200).send({
+      res: "success"
+    });
   });
 });
 
