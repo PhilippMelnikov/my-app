@@ -18,7 +18,11 @@ export class DataService {
 
   deleteCategory(id: string) {
     return this.http.delete(`/api/categories/${id}`)
-      .map(res => res.json());
+      .map(res => {
+        console.log(res.json());
+        return res.json();
+      }
+    );
   }
 
   addCategory(newCategoryTitle: string) {
@@ -35,6 +39,13 @@ export class DataService {
       .map(res => {
         return res.json();
       });
+  }
+
+  getItemsbyCategoryNoName(){
+    return this.http.get('api/items/category/noname')
+      .map(res => {
+        return res.json();
+    });
   }
 
   addItem(item: Item){
